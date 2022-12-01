@@ -1,0 +1,38 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.0
+
+Layout/LineLength:
+  Max: 90
+
+Naming/MethodParameterName:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/GlobalVars:
+  Enabled: false
+
+Style/NumberedParametersLimit:
+  Max: 3  
+
+Style/ParallelAssignment:
+  Enabled: false
+
+Style/PerlBackrefs:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
+Lint/AmbiguousOperatorPrecedence:
+    Enabled: false
+
+# Metrics:
+#   Enabled: false
