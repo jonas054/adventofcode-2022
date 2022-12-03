@@ -34,5 +34,8 @@ Style/NumericPredicate:
 Lint/AmbiguousOperatorPrecedence:
     Enabled: false
 
+Style/MutableConstant:
+    Enabled: false
+
 # Metrics:
 #   Enabled: false
