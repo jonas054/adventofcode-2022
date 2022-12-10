@@ -37,5 +37,5 @@ Lint/AmbiguousOperatorPrecedence:
 Style/MutableConstant:
     Enabled: false
 
-# Metrics:
-#   Enabled: false
+Metrics:
+  Enabled: false

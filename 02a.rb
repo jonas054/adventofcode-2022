@@ -17,7 +17,11 @@ def score(pair)
   OWN_SCORE[translate(pair[-1])] + OUTCOME_SCORE[translate(pair)]
 end
 
-def main(input) = input.lines.map(&:split).map { _1.join('-') }.map { score(_1) }.sum
+def main(input) = process(input).map { _1.join('-') }.map { score(_1) }.sum
 
-p main(EXAMPLE) # 15
-p main(File.read('02.input')) # 13526
+def process(input) = input.lines.map(&:split)
+
+if $PROGRAM_NAME == __FILE__
+  p main(EXAMPLE) # 15
+  p main(File.read('02.input')) # 13526
+end
