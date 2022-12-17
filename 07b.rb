@@ -5,8 +5,8 @@ NEEDED_SPACE = 30_000_000
 
 def main(input)
   size_map = size_map(parse(input.lines.map(&:chomp)))
-  space_to_delete = size_map['/'] + NEEDED_SPACE - AVAILABLE_SPACE
-  size_map.values.select { _1 >= space_to_delete }.min
+  to_delete = size_map['/'] + NEEDED_SPACE - AVAILABLE_SPACE
+  size_map.values.select { _1 >= to_delete }.min
 end
 
 if $PROGRAM_NAME == __FILE__

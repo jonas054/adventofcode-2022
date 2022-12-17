@@ -35,11 +35,11 @@ def parse(lines)
     case line
     when /\$ cd (.*)/
       current_dir = change_dir(current_dir, $1)
-      tree[current_dir] ||= { dirs: [] }
+      tree[current_dir] ||= { dirs: [], files_size: 0 }
     when /^dir (.*)/
       tree[current_dir][:dirs] << File.join(current_dir, $1)
     when /^(\d+) (.*)/
-      tree[current_dir][$2] = $1.to_i
+      tree[current_dir][:files_size] += $1.to_i
     end
   end
   tree
@@ -58,8 +58,7 @@ def size_map(tree)
 end
 
 def size(tree, contents)
-  contents.values_at(*(contents.keys - [:dirs])).sum +
-    contents[:dirs].map { size(tree, tree[_1]) }.sum
+  contents[:files_size] + contents[:dirs].map { size(tree, tree[_1]) }.sum
 end
 
 if $PROGRAM_NAME == __FILE__
