@@ -44,45 +44,31 @@ def main(input)
     when /If (true|false): throw to monkey (\d+)/
       @monkeys[current_monkey][:destinations] ||= {}
       @monkeys[current_monkey][:destinations][$1 == 'true'] = $2.to_i
-    else
-      raise line unless line.strip.empty?
     end
   end
-  20.times { run_round }
-  pp @monkeys.values.map { _1[:inspections] }.sort.last(2).reduce(:*)
+  run_calculation
+  p @monkeys.values.map { _1[:inspections] }.sort.last(2).reduce(:*)
 end
 
+def run_calculation = 20.times { run_round }
+
 def run_round
-  @monkeys.each_key do |number|
-    # puts "Monkey #{number}:"
-    info = @monkeys[number]
-    while info[:items].any?
-      item = info[:items].shift
-      @monkeys[number][:inspections] += 1
+  @monkeys.each_value do |info|
+    info[:inspections] += info[:items].length
+    while (item = info[:items].shift)
       new_value = item.send(info[:operator].to_sym, operand(info, item))
-      end_value = new_value / 3
-      divisible = end_value % info[:divisor] == 0
-      receiver = info[:destinations][divisible]
-      # print_info(info, item, divisible, new_value, end_value, receiver)
+      end_value = end_value(new_value)
+      receiver = info[:destinations][divisible?(new_value, end_value, info)]
       @monkeys[receiver][:items] << end_value
     end
   end
 end
 
-def print_info(info, item, divisible, new_value, end_value, receiver)
-  operation = info[:operator] == '*' ? 'is multiplied' : 'increases'
-  puts "  Monkey inspects an item with a worry level of #{item}."
-  print "    Worry level #{operation} by "
-  puts "#{info[:argument] == 'old' ? 'itself' : operand(info, item)} to #{new_value}."
-  puts "    Monkey gets bored with item. Worry level is divided by 3 to #{end_value}."
-  print '    Current worry level is '
-  puts "#{divisible ? '' : 'not '}divisible by #{info[:divisor]}."
-  puts "    Item with worry level #{end_value} is thrown to monkey #{receiver}."
-end
+def end_value(new_value) = new_value / 3
+def divisible?(_new_value, end_value, info) = end_value % info[:divisor] == 0
+def operand(info, item) = info[:argument] == 'old' ? item : info[:argument].to_i
 
-def operand(info, item)
-  info[:argument] == 'old' ? item : info[:argument].to_i
+if $PROGRAM_NAME == __FILE__
+  main(EXAMPLE) # 10605
+  main(File.read('11.input')) # 55216
 end
-
-main(EXAMPLE) # 10605
-main(File.read('11.input')) # 55216
