@@ -13,12 +13,14 @@
 
 # I hope this helps! Let me know if you have any questions.
 
+require 'set'
+
 def hill_climbing(grid)
   # Find the starting position
   start_pos = find_position(grid, 'S')
   # Find the ending position
   end_pos = find_position(grid, 'E')
-  
+
   # Initialize a queue for breadth-first search
   queue = Queue.new
   # Push the starting position onto the queue
@@ -27,21 +29,23 @@ def hill_climbing(grid)
   visited = Set.new
   # Initialize a distance hash to track the distance from the starting position
   distances = { start_pos => 0 }
-  
+
   # Perform breadth-first search
-  while !queue.empty?
+  until queue.empty?
     # Get the next position from the queue
     pos = queue.pop
     # If the position is the ending position, return the distance
     return distances[pos] if pos == end_pos
+
     # Mark the position as visited
     visited << pos
-    
-    # Get the valid next positions (adjacent positions with an elevation difference of at most 1)
+
+    # Get the valid next positions (adjacent positions with an elevation
+    # difference of at most 1)
     next_positions = get_valid_next_positions(grid, pos)
     # Update the distances and add the next positions to the queue
     next_positions.each do |next_pos|
-      if !visited.include?(next_pos)
+      unless visited.include?(next_pos)
         distances[next_pos] = distances[pos] + 1
         queue << next_pos
       end
@@ -58,19 +62,28 @@ def find_position(grid, char)
   end
 end
 
-# Returns an array of valid next positions (adjacent positions with an elevation difference of at most 1)
+# Returns an array of valid next positions (adjacent positions with an
+# elevation difference of at most 1)
 def get_valid_next_positions(grid, pos)
   row, col = pos
   next_positions = []
-  next_positions << [row-1, col] if row > 0 && (grid[row-1][col].ord - grid[row][col].ord).abs <= 1
-  next_positions << [row+1, col] if row < grid.size-1 && (grid[row+1][col].ord - grid[row][col].ord).abs <= 1
-  next_positions << [row, col-1] if col > 0 && (grid[row][col-1].ord - grid[row][col].ord).abs <= 1
-  next_positions << [row, col+1] if col < grid[row].size-1 && (grid[row][col+1].ord - grid[row][col].ord).abs <= 1
+  if row > 0 && (grid[row - 1][col].ord - grid[row][col].ord).abs <= 1
+    next_positions << [row - 1, col]
+  end
+  if row < grid.size - 1 && (grid[row + 1][col].ord - grid[row][col].ord).abs <= 1
+    next_positions << [row + 1, col]
+  end
+  if col > 0 && (grid[row][col - 1].ord - grid[row][col].ord).abs <= 1
+    next_positions << [row, col - 1]
+  end
+  if col < grid[row].size - 1 && (grid[row][col + 1].ord - grid[row][col].ord).abs <= 1
+    next_positions << [row, col + 1]
+  end
   next_positions
 end
 
 # Example usage
-grid = [  "Sabqponm",  "abcryxxl",  "accszExk",  "acctuvwj",  "abdefghi"]
+grid = %w[Sabqponm abcryxxl accszExk acctuvwj abdefghi]
 
 puts hill_climbing(grid)
 # Output: 31
