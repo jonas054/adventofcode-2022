@@ -21,8 +21,11 @@ def hill_climbing(grid)
   # Find the ending position
   end_pos = find_position(grid, 'E')
 
+  grid[start_pos.first][start_pos.last] = 'a'
+  grid[end_pos.first][end_pos.last] = 'z'
+
   # Initialize a queue for breadth-first search
-  queue = Queue.new
+  queue = []
   # Push the starting position onto the queue
   queue << start_pos
   # Initialize a visited set to track visited positions
@@ -30,6 +33,7 @@ def hill_climbing(grid)
   # Initialize a distance hash to track the distance from the starting position
   distances = { start_pos => 0 }
 
+  p start_pos: start_pos, end_pos: end_pos
   # Perform breadth-first search
   until queue.empty?
     # Get the next position from the queue
@@ -85,5 +89,5 @@ end
 # Example usage
 grid = %w[Sabqponm abcryxxl accszExk acctuvwj abdefghi]
 
-puts hill_climbing(grid)
+p hill_climbing(grid)
 # Output: 31
