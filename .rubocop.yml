@@ -32,13 +32,16 @@ Style/NumericPredicate:
   Enabled: false
 
 Lint/AmbiguousOperatorPrecedence:
-    Enabled: false
+  Enabled: false
 
 Style/MutableConstant:
-    Enabled: false
+  Enabled: false
 
 Style/FormatStringToken:
-    Enabled: false
+  Enabled: false
+
+Security/Eval:
+  Enabled: false
 
 Metrics:
   Enabled: false
