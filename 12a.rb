@@ -10,12 +10,15 @@ EXAMPLE = <<~TEXT.freeze
 TEXT
 
 def main(input)
-  # Map the input into a hash with positions as keys, e.g. { 0+0i => 'S', ... }
+  map_grid(input)
+  p breadth_first_search(find_pos('S'), find_pos('E'))
+end
+
+# Map the input into a hash with positions as keys, e.g. { 0+0i => 'S', ... }
+def map_grid(input)
   @grid = input.lines.each_with_index.map do |line, row_index|
     line.chomp.chars.each_with_index.map { [Complex(_2, row_index), _1] }
   end.flatten(1).to_h
-
-  p breadth_first_search(find_pos('S'), find_pos('E'))
 end
 
 def find_pos(marker) = @grid.keys.find { @grid[_1] == marker }
@@ -39,5 +42,7 @@ end
 
 def elevation(pos) = @grid[pos].tr('SE', 'az').ord
 
-main(EXAMPLE) # 31
-main(File.read('12.input')) # 472
+if $PROGRAM_NAME == __FILE__
+  main(EXAMPLE) # 31
+  main(File.read('12.input')) # 472
+end
